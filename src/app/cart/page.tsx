@@ -4,8 +4,16 @@ import { getCart, removeFromCart, addToCart } from '@/lib/cart';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+// Typ produktu w koszyku
+type CartItem = {
+  id: number | string;
+  name: string;
+  price: number;
+  quantity?: number;
+};
+
 export default function CartPage() {
-  const [cart, setCart] = useState<any[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
     const loadCart = () => setCart(getCart());
@@ -20,7 +28,7 @@ export default function CartPage() {
     setCart(getCart());
   };
 
-  const handleIncrease = (product: any) => {
+  const handleIncrease = (product: CartItem) => {
     addToCart(product);
     setCart(getCart());
   };
@@ -112,3 +120,4 @@ export default function CartPage() {
     </main>
   );
 }
+
