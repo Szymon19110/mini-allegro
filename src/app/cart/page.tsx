@@ -6,27 +6,39 @@ import Link from 'next/link';
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isMounted, setIsMounted] = useState(false); // 🔑 ważne
 
   useEffect(() => {
-    const loadCart = () => setCart(getCart());
+    setIsMounted(true);
+
+    const loadCart = () => {
+      const cartData = getCart();
+      setCart(cartData);
+    };
+
     loadCart();
+
     window.addEventListener('storage', loadCart);
     return () => window.removeEventListener('storage', loadCart);
   }, []);
 
-  const handleRemove = (id: number | string) => {
+  if (!isMounted) {
+    return null; // opcjonalnie: spinner / tekst "Ładowanie..."
+  }
+
+  const handleRemove = (id: number | string): void => {
     removeFromCart(id);
     setCart(getCart());
   };
 
-  const handleIncrease = (product: CartItem) => {
+  const handleIncrease = (product: CartItem): void => {
     addToCart(product);
     setCart(getCart());
   };
 
-  const handleDecrease = (id: number | string) => {
-    const current = getCart();
-    const updated = current.map((item) =>
+  const handleDecrease = (id: number | string): void => {
+    const current: CartItem[] = getCart();
+    const updated: CartItem[] = current.map((item: CartItem) =>
       item.id === id
         ? { ...item, quantity: Math.max((item.quantity || 1) - 1, 1) }
         : item
@@ -36,7 +48,8 @@ export default function CartPage() {
   };
 
   const total = cart.reduce(
-    (sum, item) => sum + (item.quantity || 1) * item.price,
+    (sum: number, item: CartItem) =>
+      sum + (item.quantity || 1) * Number(item.price),
     0
   );
 
@@ -55,7 +68,7 @@ export default function CartPage() {
         <p className="text-center text-gray-600">Koszyk jest pusty.</p>
       ) : (
         <div className="space-y-4">
-          {cart.map((item) => (
+          {cart.map((item: CartItem) => (
             <div
               key={item.id}
               className="bg-white p-4 rounded shadow flex justify-between items-center"
@@ -89,6 +102,7 @@ export default function CartPage() {
               </div>
             </div>
           ))}
+
           <div className="text-right text-xl font-bold mt-6">
             Suma: {total} zł
           </div>
