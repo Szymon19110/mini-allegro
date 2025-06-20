@@ -1,16 +1,8 @@
 'use client';
 
-import { getCart, removeFromCart, addToCart } from '@/lib/cart';
+import { getCart, removeFromCart, addToCart, CartItem } from '@/lib/cart';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-
-// Typ produktu w koszyku
-type CartItem = {
-  id: number | string;
-  name: string;
-  price: number;
-  quantity?: number;
-};
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -120,4 +112,3 @@ export default function CartPage() {
     </main>
   );
 }
-
