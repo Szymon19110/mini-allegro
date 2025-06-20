@@ -2,9 +2,8 @@
 
 import { addToCart } from '@/lib/cart';
 import { useRouter } from 'next/navigation';
-
 import { products } from '@/lib/products';
-
+import Image from 'next/image'; // ✅ import komponentu Image
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -15,19 +14,23 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   }
 
   const handleAdd = () => {
-    addToCart(product);
-    router.push('/cart');
-  };
+   addToCart({
+  ...product,
+  price: Number(product.number)
+});
 
   return (
     <main className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full max-w-md rounded shadow"
-      />
+      <div className="relative w-full max-w-md h-64">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          className="object-cover rounded shadow"
+        />
+      </div>
       <h1 className="text-2xl font-bold mt-4">{product.name}</h1>
-      <p className="text-green-600 font-bold text-xl">{product.price} zł</p>
+      <p className="text-green-600 font-bold text-xl">{product.number} zł</p>
       <button
         onClick={handleAdd}
         className="mt-6 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition"
@@ -36,4 +39,4 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       </button>
     </main>
   );
-}
+}}
