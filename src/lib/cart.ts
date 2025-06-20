@@ -8,10 +8,10 @@ export type CartItem = {
 export const getCart = (): CartItem[] => {
   if (typeof window === 'undefined') return [];
   const cart = localStorage.getItem('cart');
-  return cart ? JSON.parse(cart) : [];
+  return cart ? (JSON.parse(cart) as CartItem[]) : [];
 };
 
-export const addToCart = (product: CartItem) => {
+export const addToCart = (product: CartItem): void => {
   if (typeof window === 'undefined') return;
 
   const cart = getCart();
@@ -32,7 +32,7 @@ export const addToCart = (product: CartItem) => {
   localStorage.setItem('cart', JSON.stringify(updated));
 };
 
-export const removeFromCart = (id: number | string) => {
+export const removeFromCart = (id: number | string): void => {
   if (typeof window === 'undefined') return;
   const cart = getCart();
   const updated = cart.filter((item) => item.id !== Number(id));
