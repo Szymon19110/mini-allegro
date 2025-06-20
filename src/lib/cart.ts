@@ -15,13 +15,13 @@ export const getCart = (): CartItem[] => {
 export const addToCart = (product: CartItem): void => {
   if (typeof window === 'undefined') return;
 
-  const cart: CartItem[] = getCart();
-  const existing: CartItem | undefined = cart.find((item: CartItem) => item.id === product.id);
+  const cart = getCart();
+  const existing = cart.find((item) => item.id === product.id);
 
   let updated: CartItem[];
 
   if (existing) {
-    updated = cart.map((item: CartItem): CartItem =>
+    updated = cart.map((item) =>
       item.id === product.id
         ? { ...item, quantity: (item.quantity || 1) + 1 }
         : item
@@ -36,7 +36,7 @@ export const addToCart = (product: CartItem): void => {
 export const removeFromCart = (id: number | string): void => {
   if (typeof window === 'undefined') return;
 
-  const cart: CartItem[] = getCart();
-  const updated: CartItem[] = cart.filter((item: CartItem) => item.id !== Number(id));
+  const cart = getCart();
+  const updated = cart.filter((item) => item.id !== id);
   localStorage.setItem('cart', JSON.stringify(updated));
 };

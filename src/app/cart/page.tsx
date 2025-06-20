@@ -10,24 +10,23 @@ export default function CartPage() {
   useEffect(() => {
     const loadCart = () => setCart(getCart());
     loadCart();
-
     window.addEventListener('storage', loadCart);
     return () => window.removeEventListener('storage', loadCart);
   }, []);
 
-  const handleRemove = (id: number | string): void => {
+  const handleRemove = (id: number | string) => {
     removeFromCart(id);
     setCart(getCart());
   };
 
-  const handleIncrease = (product: CartItem): void => {
+  const handleIncrease = (product: CartItem) => {
     addToCart(product);
     setCart(getCart());
   };
 
-  const handleDecrease = (id: number | string): void => {
-    const current: CartItem[] = getCart();
-    const updated: CartItem[] = current.map((item: CartItem) =>
+  const handleDecrease = (id: number | string) => {
+    const current = getCart();
+    const updated = current.map((item) =>
       item.id === id
         ? { ...item, quantity: Math.max((item.quantity || 1) - 1, 1) }
         : item
@@ -37,8 +36,7 @@ export default function CartPage() {
   };
 
   const total = cart.reduce(
-    (sum: number, item: CartItem) =>
-      sum + (item.quantity || 1) * Number(item.price),
+    (sum, item) => sum + (item.quantity || 1) * item.price,
     0
   );
 
@@ -57,7 +55,7 @@ export default function CartPage() {
         <p className="text-center text-gray-600">Koszyk jest pusty.</p>
       ) : (
         <div className="space-y-4">
-          {cart.map((item: CartItem) => (
+          {cart.map((item) => (
             <div
               key={item.id}
               className="bg-white p-4 rounded shadow flex justify-between items-center"
@@ -91,7 +89,6 @@ export default function CartPage() {
               </div>
             </div>
           ))}
-
           <div className="text-right text-xl font-bold mt-6">
             Suma: {total} zł
           </div>
