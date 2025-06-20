@@ -2,6 +2,7 @@ export type CartItem = {
   id: number | string;
   name: string;
   price: number;
+  image?: string;
   quantity?: number;
 };
 
@@ -15,9 +16,7 @@ export const addToCart = (product: CartItem): void => {
   if (typeof window === 'undefined') return;
 
   const cart: CartItem[] = getCart();
-  const existing: CartItem | undefined = cart.find(
-    (item: CartItem) => item.id === product.id
-  );
+  const existing: CartItem | undefined = cart.find((item: CartItem) => item.id === product.id);
 
   let updated: CartItem[];
 
@@ -38,9 +37,6 @@ export const removeFromCart = (id: number | string): void => {
   if (typeof window === 'undefined') return;
 
   const cart: CartItem[] = getCart();
-  const updated: CartItem[] = cart.filter(
-    (item: CartItem) => item.id !== Number(id)
-  );
+  const updated: CartItem[] = cart.filter((item: CartItem) => item.id !== Number(id));
   localStorage.setItem('cart', JSON.stringify(updated));
 };
-
