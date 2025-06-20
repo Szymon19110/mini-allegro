@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { addToCart } from '@/lib/cart';
 import { products } from '@/lib/products';
@@ -32,18 +33,25 @@ export default function Home() {
           >
             <Link href={`/product/${product.id}`}>
               <div className="cursor-pointer text-black">
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
+                  width={400}
+                  height={300}
                   className="w-full h-48 object-cover rounded"
                 />
                 <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
-                <p className="text-green-600 font-bold">{product.price} zł</p>
+                <p className="text-green-600 font-bold">{product.number} zł</p>
               </div>
             </Link>
-
             <button
-              onClick={() => addToCart(product)}
+              onClick={() =>
+  addToCart({
+    ...product,
+    price: Number(product.number)
+  })
+}
+
               className="mt-3 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
             >
               Dodaj do koszyka
